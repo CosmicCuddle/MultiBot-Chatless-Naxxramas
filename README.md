@@ -21,6 +21,37 @@ It keeps the familiar MultiBot UI while moving more bot reads and actions away f
 
 ---
 
+## About This Fork
+
+This repository is a modified fork of [Wishmaster117/MultiBot-Chatless](https://github.com/Wishmaster117/MultiBot-Chatless), based on the original MultiBot addon by Nico Löbbert.
+
+**Fork modifications are maintained by CosmicCuddle.**
+
+**Modification notice — 2 October 2026:** this fork adds custom Naxxramas server integration for the bot consumables system while preserving the upstream MultiBot Chatless code and GPLv3 license.
+
+### Naxxramas Bot Consumables Integration
+
+This fork adds a **Consumables** control to MultiBot for the custom Naxxramas bot consumables system.
+
+The consumables controls require the server-side `BotRaidConsumables.cpp` system from:
+
+- [CosmicCuddle/Mod-Naxxramas-Core](https://github.com/CosmicCuddle/Mod-Naxxramas-Core)
+- [BotRaidConsumables.cpp](https://github.com/CosmicCuddle/Mod-Naxxramas-Core/blob/main/src/Systems/BotRaidConsumables.cpp)
+
+Without that server-side system, the custom consumables buttons will not function because the server will not provide the required `.bot consumables ...` commands.
+
+The Naxxramas consumables UI provides:
+
+- named dungeon profiles for Maraudon, Sunken Temple, Blackrock Depths, Scholomance, Stratholme Undead, Dire Maul, Lower Blackrock Spire and Upper Blackrock Spire;
+- a custom consumable level input from **1–54** for non-raid dungeons;
+- MultiBot-style tooltips and a help panel explaining the consumable system;
+- the normal MultiBot Shift + Right-click button swapping behaviour for the main Consumables button.
+
+The rest of MultiBot Chatless continues to use the upstream `mod-multibot-bridge` architecture. The custom Naxxramas consumables controls are an additional server-specific integration and use the commands supplied by `Mod-Naxxramas-Core`.
+
+---
+
+
 ## Companion Bridge Required
 
 This repository contains the **client addon**.
@@ -78,6 +109,7 @@ The project is currently **bridge-first / mostly chatless** rather than fully ch
 | **Quests** | Bridge-backed quest list and structured bot quest abandon. Native quest sharing remains available. |
 | **Loot** | Structured loot profiles and exact persistent always-loot item add/remove. |
 | **Group tools** | Formation, Roll, RTI, Pull Control, Disperse and other migrated group controls. |
+| **Naxxramas consumables** | Fork-specific dungeon consumable controls backed by `Mod-Naxxramas-Core` and `BotRaidConsumables.cpp`. |
 | **Character information** | Bot skills, reputations, currencies/emblems, spellbook, stats and PvP stats. |
 | **Outfits** | Outfit listing and actions through the Bridge. |
 | **SelfBot** | Dedicated enable/disable, strategy and selected action support. |
@@ -166,6 +198,13 @@ When a migrated Bridge feature is available, the addon should prefer the structu
 
 1. Install and configure AzerothCore with `mod-playerbots`.
 2. Install [`mod-multibot-bridge`](https://github.com/Wishmaster117/mod-multibot-bridge) on the server and rebuild AzerothCore.
+
+### Naxxramas consumables requirement
+
+To use the custom **Consumables** controls in this fork, the server must also include [`Mod-Naxxramas-Core`](https://github.com/CosmicCuddle/Mod-Naxxramas-Core) with [`src/Systems/BotRaidConsumables.cpp`](https://github.com/CosmicCuddle/Mod-Naxxramas-Core/blob/main/src/Systems/BotRaidConsumables.cpp) compiled and loaded.
+
+This requirement applies specifically to the Naxxramas consumables controls; the normal MultiBot Chatless features continue to depend on the upstream bridge as documented above.
+
 3. Copy or clone this repository as:
 
 ```text
@@ -236,6 +275,10 @@ The active roadmap currently keeps these items outside the next normal feature b
 ---
 
 # Credits
+
+- **Original MultiBot author:** Nico Löbbert
+- **MultiBot Chatless maintainer:** Wishmaster117 / TheWarlock
+- **Naxxramas fork additions:** CosmicCuddle
 
 MultiBot Chatless builds on the AzerothCore and `mod-playerbots` ecosystem.
 

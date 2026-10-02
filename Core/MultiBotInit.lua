@@ -61,6 +61,10 @@ if MultiBot.InitializeGroupActionsUI then
 	MultiBot.InitializeGroupActionsUI(tRight)
 end
 
+if MultiBot.InitializeConsumablesUI then
+	MultiBot.InitializeConsumablesUI(tRight)
+end
+
 MultiBot.InitializeInventoryFrame()
 
 MultiBot.InitializeItemusFrame()

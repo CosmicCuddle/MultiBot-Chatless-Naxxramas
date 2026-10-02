@@ -7,6 +7,10 @@
 ## SavedVariables: MultiBotGlobalSave
 ## X-Maintainer: Wishmaster117 aka TheWarlock
 ## X-Contributors: Wishmaster117 aka TheWarlock
+## X-ForkMaintainer: CosmicCuddle
+## X-ForkProjectURL: https://github.com/CosmicCuddle/MultiBot-Chatless-Naxxramas
+## X-ForkChanges: Naxxramas bot consumables integration
+## X-ForkModified: 2026-10-02
 ## X-Contact: plexalexdcnh@gmail.com
 ## X-ProjectURL: https://github.com/Wishmaster117/MultiBot-Standalone
 
@@ -91,6 +95,7 @@ UI\MultiBotGameObjectResultsFrame.lua
 UI\MultiBotQuestsMenu.lua
 UI\MultiBotMinimap.lua
 UI\MultiBotGroupActionsUI.lua
+UI\MultiBotConsumablesUI.lua
 UI\MultiBotAttackUI.lua
 UI\MultiBotLeftCoreUI.lua
 UI\MultiBotFormationUI.lua
