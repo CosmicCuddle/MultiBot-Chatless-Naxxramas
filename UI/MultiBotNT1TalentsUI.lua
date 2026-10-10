@@ -137,8 +137,8 @@ function Talents:EnsureWindow()
     window:SetClampedToScreen(true)
     window:EnableMouse(true)
     window:RegisterForDrag("LeftButton")
-    window:SetScript("OnDragStart", function(self) self:StartMoving() end)
-    window:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
+    window:SetScript("OnDragStart", function(frame) frame:StartMoving() end)
+    window:SetScript("OnDragStop", function(frame) frame:StopMovingOrSizing() end)
     window:SetBackdrop({
         bgFile="Interface\\Buttons\\WHITE8X8",
         edgeFile="Interface\\DialogFrame\\UI-DialogBox-Border",
@@ -150,7 +150,7 @@ function Talents:EnsureWindow()
 
     local title = styledLabel(window, "NT1 TALENT IMPORT  |  PLAYERBOT", 22, -18, 470,
         {1, 0.84, 0.42})
-    if GameFontNormalLarge then title:SetFontObject(GameFontNormalLarge) end
+    if _G.GameFontNormalLarge then title:SetFontObject(_G.GameFontNormalLarge) end
     local close = CreateFrame("Button", nil, window, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -7, -6)
 
