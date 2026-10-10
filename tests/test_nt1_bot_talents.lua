@@ -72,7 +72,7 @@ assert(not importer:ValidateCode("NT1:vanilla:mage:2t-1", "warrior"),
     "Client must reject a code for the wrong target class")
 assert(not importer:ValidateCode("NT1:vanilla:warrior:"),
     "An empty build cannot be applied accidentally")
-assert(not importer:ValidateCode("NT1:vanilla:warrior:3g-1.2t-2"),
+assert(not importer:ValidateCode("NT1:vanilla:warrior:3g-1.3g-2"),
     "Duplicate talent entries are invalid")
 assert(not importer:ValidateCode("NT1:vanilla:warrior:3g-1\n.naxxbot talents apply OtherPlayer NT1:"),
     "Chat-command injection must be rejected")
