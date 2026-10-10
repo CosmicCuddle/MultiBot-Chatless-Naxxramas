@@ -28,6 +28,7 @@ end
 local DUNGEON_PROFILES = {
     {
         name = "Maraudon",
+        info = "Level cap: 54. Nature Protection when level-eligible. Includes role-matched elixir, food, scroll and healing/mana potions.",
         command = "mara",
         icon = "ability_hunter_pet_devilsaur",
         tip = makeActionTooltip(
@@ -39,6 +40,7 @@ local DUNGEON_PROFILES = {
     },
     {
         name = "SunkenTemple",
+        info = "Level cap: 54. Nature Protection when level-eligible. Includes role-matched elixir, food, scroll and healing/mana potions.",
         command = "sunken",
         icon = "spell_nature_wispsplode",
         tip = makeActionTooltip(
@@ -50,6 +52,7 @@ local DUNGEON_PROFILES = {
     },
     {
         name = "BlackrockDepths",
+        info = "Level cap: 60. Fire Protection when level-eligible. Includes role-matched elixir, food, scroll and healing/mana potions.",
         command = "brd",
         icon = "inv_misc_key_04",
         tip = makeActionTooltip(
@@ -61,6 +64,7 @@ local DUNGEON_PROFILES = {
     },
     {
         name = "Scholomance",
+        info = "Level cap: 60. Shadow Protection when level-eligible. Includes role-matched elixir, food, scroll and healing/mana potions.",
         command = "scholo",
         icon = "spell_shadow_deathcoil",
         tip = makeActionTooltip(
@@ -72,6 +76,7 @@ local DUNGEON_PROFILES = {
     },
     {
         name = "StratholmeUndead",
+        info = "Level cap: 60. Undead/Service Entrance side only. Shadow Protection when level-eligible, plus role-matched elixir, food, scroll and potions.",
         command = "stratud",
         icon = "spell_holy_senseundead",
         tip = makeActionTooltip(
@@ -83,6 +88,7 @@ local DUNGEON_PROFILES = {
     },
     {
         name = "DireMaul",
+        info = "Level cap: 60. Wing auto-detected: East = Nature Protection; West = Shadow Protection; North = extra supplies (bandages, invulnerability potions, oils/poisons when usable).",
         command = "dm",
         icon = "inv_misc_book_07",
         tip = makeActionTooltip(
@@ -94,6 +100,7 @@ local DUNGEON_PROFILES = {
     },
     {
         name = "LowerBlackrockSpire",
+        info = "Level cap: 60. Must be on the Lower Blackrock Spire side. Role-matched elixir, food, scroll and healing/mana potions; no special protection potion is configured.",
         command = "lbrs",
         icon = "ability_hunter_pet_wolf",
         tip = makeActionTooltip(
@@ -105,6 +112,7 @@ local DUNGEON_PROFILES = {
     },
     {
         name = "UpperBlackrockSpire",
+        info = "Level cap: 60. Must be on the Upper Blackrock Spire side. Fire Protection plus extra supplies (bandages, invulnerability potions, oils/poisons when usable).",
         command = "ubrs",
         icon = "spell_fire_fire",
         tip = makeActionTooltip(
@@ -228,6 +236,17 @@ function ConsumablesUI:EnsureDialogs()
         end,
     }
 
+    -- One reusable read-only detail popup for each named dungeon.
+    -- Pass profile name/description through the standard WoW popup API.
+    StaticPopupDialogs["MULTIBOT_CONSUMABLES_PROFILE_INFO"] = {
+        text = "%s\\n\\n%s\\n\\nRole and level matter: tanks get defensive elixirs, physical DPS get strength/agility choices, and casters/healers get suitable magic or intellect effects. Food and scrolls vary; potions are stocked when usable.\\n\\nYou must be inside the correct dungeon or wing.",
+        button1 = OKAY or "Okay",
+        timeout = 0,
+        whileDead = true,
+        hideOnEscape = true,
+        preferredIndex = 3,
+    }
+
     StaticPopupDialogs["MULTIBOT_CONSUMABLES_HELP"] = {
         text = "How Bot Consumables Work\n\nNamed dungeon buttons use a dedicated server profile for the dungeon or wing you are physically inside.\n\nBots are prepared by class/spec role with suitable elixirs, food, scrolls, healing potions, mana potions where appropriate, and any profile-specific protection or extras.\n\nThe custom Level option accepts 1-54 and is for non-raid dungeons. The effective level is safely capped by the requested level, each bot's real level, and the dungeon level cap.\n\nThe server tracks the consumable auras it applied and can warn when tracked buffs need refreshing. Leaving the allowed instance clears that profile.\n\nRight-click the main Consumables button to open or close the dungeon profile bar.",
         button1 = OKAY or "Okay",
@@ -245,6 +264,22 @@ function ConsumablesUI:ShowLevelPrompt()
     if StaticPopup_Show then
         StaticPopup_Show("MULTIBOT_CONSUMABLES_LEVEL")
     end
+end
+
+function ConsumablesUI:ShowProfileInfo(profile)
+    if not profile or not profile.info then
+        return false
+    end
+
+    self:EnsureDialogs()
+    if StaticPopup_Show then
+        StaticPopup_Show("MULTIBOT_CONSUMABLES_PROFILE_INFO",
+            profile.tip:match("^[^\\n]+") or profile.name,
+            profile.info)
+        return true
+    end
+
+    return false
 end
 
 function ConsumablesUI:ShowHelp()
@@ -318,11 +353,16 @@ function MultiBot.InitializeConsumablesUI(tRight)
             -- screen positions to show Maraudon at the top and UBRS below.
             (#DUNGEON_PROFILES - index) * 34,
             profile.icon,
-            profile.tip
+            profile.tip .. "\\n\\n|cff55ccffRight-click: see expected consumables and protections|r"
         )
 
         profileButton.doLeft = function()
             ConsumablesUI:RunProfile(profile)
+        end
+
+        -- Right-click is informational only. Never send a bot command.
+        profileButton.doRight = function()
+            ConsumablesUI:ShowProfileInfo(profile)
         end
     end
 
