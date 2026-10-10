@@ -3,9 +3,9 @@
 Repository: https://github.com/CosmicCuddle/N-MultiBot-Chatless  
 Client: World of Warcraft 3.3.5a (Interface 30300, Lua 5.1)  
 Current main commit: e33e87954cb53e5c8cb21b694faae37653dea180 (PR #1 merged)
-Last development branch: feature/nt1-bot-talents-paste-button  
-Current standalone source version: MultiBot 4.0.1 — test build; NOT a published production release  
-Last maintained: 10 October 2026  
+Current development branch: feature/optional-naxxramas-buttons-layout; prior merged feature: feature/nt1-bot-talents-paste-button  
+Current development target: MultiBot 4.0.2 — opt-in Naxxramas visibility controls and NT1 UI polish; not yet client verified  
+Last maintained: 10 October 2026 — opt-in Naxxramas toolbar controls  
 Public suite baseline: N Addon Collection v2.0.0, which still includes approved MultiBot 4.0  
 Author and credit lineage: Nico Löbbert, Wishmaster117/TheWarlock, CosmicCuddle
 
@@ -59,6 +59,62 @@ The input may hold up to 2048 characters for validation, matching the server cod
 | docs/ROADMAP.md | Previous fork/upstream bridge migration history, retained intact |
 
 The UI module does not modify UI/MultiBotSpecUI.lua, which continues to provide premade Playerbots specs, nor the bridge, consumables, Playerbots, Individual Progression or core AzerothCore code. This separation is intentional.
+
+## Current feature — optional Naxxramas toolbar buttons (4.0.2)
+
+The 4.0.1 fork showed the right-side NT1 Talents and Bot Consumables controls unconditionally. The player requested two independent visibility controls inside the existing vertical MultiBot configuration bar, **both off by default**. The change follows the existing main-bar on/off and SavedVariables conventions rather than creating separate settings.
+
+### User-visible behavior and source changes
+
+- **Show Bot Consumables** (elixir icon, off by default): enables the original right-side Consumables button and its dungeon profile menu. Disabling hides that button and closes any open consumables menu. Does not change the consumables logic.
+- **Show NT1 Talents** (book icon, off by default): enables the right-side NT1 Talents button. Disabling hides it, closes the paste window, and clears input focus without sending a command.
+- Both switches can be enabled independently. If exactly one is on it uses right-side x=102; when both are on, Consumables uses x=102 and NT1 x=136. No large unnecessary blank gap.
+- Saved keys are ShowBotConsumables and ShowNT1Talents in the *existing* main-bar profile store, restored on addon load and saved on click/logout. Missing keys mean off, including existing users upgrading from 4.0.1. Saved configuration-bar button order and Shift+RightClick swapping remain available.
+- NT1 dialog now has width 590 and height 348, with shorter, separated title, target, instructions, example, entry, status and warning. This addresses the overlapping text in the actual player's large-font screenshot. The original near-empty-looking Talent.blp icon is replaced by WoW's stock book icon.
+- These are client-side **visibility preferences**; they do not change Naxxramas Core's server-side AccessMode, bot permissions, expansion validation or the NT1 application command.
+
+| File | Responsibility in 4.0.2 |
+| --- | --- |
+| UI/MultiBotMainUI.lua | Two initially-disabled config toggles, immediate save and dynamic right button visibility |
+| Core/MultiBotInit.lua | Apply hidden defaults immediately after constructing right-side custom buttons |
+| Core/MultiBotHandler.lua | Restore state from existing mainBar SavedVariables and write at logout |
+| UI/MultiBotNT1TalentsUI.lua | Taller, better-spaced paste window and stock book icon |
+| MultiBot.toc | Standalone 4.0.2 test version |
+| tests/test_naxxramas_button_visibility.lua | Default-off, each combination, popup/menu close, positions, persistence hooks |
+| tests/test_nt1_bot_talents.lua | Previous target and input safety plus window sizing/icon regression |
+| .github/workflows/nt1-playerbot-talents.yml | Run both Lua 5.1 test scripts and syntax checks |
+| README.md | Feature configuration and known limitations |
+| ROADMAP.md | Maintainer record, live evidence and next step |
+
+### Recorded 4.0.1 in-game feedback
+
+The user provided screenshots showing the new Talents button and window loaded and correctly targeted Mage **Nelje**. Read-only Preview displayed tree point counts; Apply later returned a server message that **Nelje had 51 spent and 0 unspent points** with the existing grouped random-bot nonpersistent-profile warning. This confirms the experimental command-level test succeeded, **not independently checked talent spells or safe database rollback**. The screenshot also clearly showed overlapping oversized text and an empty-looking small icon.
+
+### Exact next task — in-game verification of 4.0.2
+
+1. Confirm GitHub Actions validation and the main-branch test ZIP after merge; record its exact SHA and run. Do **not** modify the published N Addon Collection v2.0.0 package.
+2. Close WoW; back up the MultiBot folder and account/character WTF SavedVariables; extract only the new MultiBot/ folder from the install-ready ZIP.
+3. On a fresh config/profile, both custom right-side buttons must be hidden and both new buttons in the *main configuration bar* must be off.
+4. Enable **only Consumables**. Its existing elixir button and dungeon menu must work; NT1 must stay hidden.
+5. Disable Consumables and enable **only NT1**. Its book icon must be visible in the same first available right-side slot; open the popup and check text no longer overlaps at enlarged UI scale.
+6. Enable both simultaneously. Buttons must be adjacent and usable. Disable Consumables with its menu open (menu should close). Disable NT1 with paste window open (window should close, no command sent).
+7. Test /reload, full logout and relog with each combination. Toggle settings must persist. Disable both again and confirm persistence; old settings/layout must remain intact.
+8. Check config bar Shift+RightClick reorder, existing premade talent-spec controls and consumables help, and verify no Lua errors or misplaced clickable areas.
+9. Use **Preview** on a disposable bot if needed. A new actual Apply trial requires characters database and per-bot talent backups, same as the separate server safety notes below. Independently inspect trained talent ranks/spells before calling the server importer fully tested.
+10. Send screenshots of the config bar and the refined NT1 window; record results in this document and change the next task accordingly.
+
+**Acceptance:** real-client screenshot, two independently functioning default-off switches, persisted SavedVariables and readable popup. Automated Lua mocks alone do not establish visual success.
+
+### Progress checklist
+
+- [x] Code for two independent default-off config bar toggles, layout and menu cleanup
+- [x] Saved-state restoration and immediate write through the existing profile store
+- [x] Initial display suppressed on addon construction
+- [x] Larger NT1 window with shorter labels and stock icon
+- [ ] Lua 5.1 targeted tests and repository lint/format for 4.0.2
+- [ ] New build tested and screenshots reviewed in real WoW client
+- [ ] Saved states confirmed after reload/relog
+- [ ] Actual 51-point talents and learned spells independently checked when approved
 
 ## Server-side status and explicit precautions
 
