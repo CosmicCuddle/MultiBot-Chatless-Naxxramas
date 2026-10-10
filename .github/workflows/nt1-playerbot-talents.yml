@@ -56,6 +56,11 @@ jobs:
       - name: Run default-off Naxxramas button layout regressions
         run: lua5.1 tests/test_naxxramas_button_visibility.lua
 
+      - name: Check dungeon profile order and right-click explanations
+        run: |
+          luac5.1 -p UI/MultiBotConsumablesUI.lua
+          lua5.1 tests/test_consumables_profile_info.lua
+
       - name: Build clean install-ready MultiBot test ZIP
         run: |
           python3 - <<'PY'
