@@ -3,8 +3,8 @@
 Repository: https://github.com/CosmicCuddle/N-MultiBot-Chatless  
 Client: World of Warcraft 3.3.5a (Interface 30300, Lua 5.1)  
 Current main commit: e33e87954cb53e5c8cb21b694faae37653dea180 (PR #1 merged)
-Current development branch: feature/optional-naxxramas-buttons-layout; prior merged feature: feature/nt1-bot-talents-paste-button  
-Current development target: MultiBot 4.0.2 — opt-in Naxxramas visibility controls and NT1 UI polish; not yet client verified  
+Current main commit: 75a3cf4c96ff53f4189a9c33d1327095ea0763f2 (PR #2 merged); prior merged feature PR #1  
+Current main version: MultiBot 4.0.2 — opt-in Naxxramas controls and NT1 UI polish merged; in-game verification of these changes still pending  
 Last maintained: 10 October 2026 — opt-in Naxxramas toolbar controls  
 Public suite baseline: N Addon Collection v2.0.0, which still includes approved MultiBot 4.0  
 Author and credit lineage: Nico Löbbert, Wishmaster117/TheWarlock, CosmicCuddle
@@ -111,7 +111,7 @@ The user provided screenshots showing the new Talents button and window loaded a
 - [x] Saved-state restoration and immediate write through the existing profile store
 - [x] Initial display suppressed on addon construction
 - [x] Larger NT1 window with shorter labels and stock icon
-- [x] Lua 5.1 targeted NT1 and opt-in button tests passed in [Actions 38084685458](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38084685458); Lua lint passed in [38084685450](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38084685450). Format workflow pending final confirmation.
+- [x] Main [NT1 and visibility CI 38084785531](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38084785531) passed, produced the install-ready test ZIP and preserved existing target/transport tests. Main Lua lint also passed. [PR #2](https://github.com/CosmicCuddle/N-MultiBot-Chatless/pull/2) merged. Screenshot and persistence acceptance still pending.
 - [ ] New build tested and screenshots reviewed in real WoW client
 - [ ] Saved states confirmed after reload/relog
 - [ ] Actual 51-point talents and learned spells independently checked when approved
