@@ -9,7 +9,7 @@ MultiBot.NT1Talents = Talents
 
 local MAX_COMMAND_LENGTH = 255 -- WoW 3.3.5a chat transport limit; fail closed.
 local MAX_CODE_LENGTH = 2048 -- Naxxramas Core parser limit.
-local EXAMPLE = "NT1:vanilla:warrior:2t-1"
+local EXAMPLE = "NT1:vanilla:warrior:3g-1"
 local CLASSES = {
     warrior=true, paladin=true, hunter=true, rogue=true, priest=true,
     deathknight=true, shaman=true, mage=true, warlock=true, druid=true,
