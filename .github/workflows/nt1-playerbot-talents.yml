@@ -1,0 +1,82 @@
+name: NT1 Playerbot Talents (WoW 3.3.5a)
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout MultiBot
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Require updated maintainer roadmap for code PRs
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$BASE_REF"
+          changed="$(git diff --name-only "origin/$BASE_REF"...HEAD)"
+          echo "$changed"
+          if printf '%s\n' "$changed" | grep -Eq '^(Core/|UI/|Strategies/|Features/|Data/|MultiBot\.toc$|tests/|\.github/workflows/)'; then
+            if ! printf '%s\n' "$changed" | grep -Fxq 'ROADMAP.md'; then
+              echo "::error::Update ROADMAP.md with current status, evidence and next step."
+              exit 1
+            fi
+          fi
+
+      - name: Install Lua 5.1
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y lua5.1
+
+      - name: Validate NT1 addon syntax and integration points
+        run: |
+          set -euo pipefail
+          luac5.1 -p UI/MultiBotNT1TalentsUI.lua
+          luac5.1 -p Core/MultiBotInit.lua
+          grep -Fqx 'UI\MultiBotNT1TalentsUI.lua' MultiBot.toc
+          grep -Fq 'MultiBot.InitializeNT1TalentsUI(tRight)' Core/MultiBotInit.lua
+
+      - name: Run targeted-bot and command safety regressions
+        run: lua5.1 tests/test_nt1_bot_talents.lua
+
+      - name: Build clean install-ready MultiBot test ZIP
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import Path
+          root = Path('.')
+          out = Path('dist/MultiBot-NT1-Talents-test.zip')
+          out.parent.mkdir(exist_ok=True)
+          excluded = {'.git', '.github', 'tests', 'docs', 'dist'}
+          with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as archive:
+              for path in sorted(root.rglob('*')):
+                  if not path.is_file() or any(x in excluded for x in path.parts):
+                      continue
+                  if path.name.startswith('.'):
+                      continue
+                  archive.write(path, 'MultiBot/' + path.as_posix())
+              included = set(archive.namelist())
+              assert 'MultiBot/MultiBot.toc' in included
+              assert 'MultiBot/UI/MultiBotNT1TalentsUI.lua' in included
+              assert 'MultiBot/Core/MultiBotInit.lua' in included
+          print(f'Built {out}')
+          PY
+
+      - name: Upload standalone MultiBot test artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: multibot-nt1-talents-test
+          path: dist/MultiBot-NT1-Talents-test.zip
+          if-no-files-found: error

@@ -65,6 +65,10 @@ if MultiBot.InitializeConsumablesUI then
 	MultiBot.InitializeConsumablesUI(tRight)
 end
 
+if MultiBot.InitializeNT1TalentsUI then
+	MultiBot.InitializeNT1TalentsUI(tRight)
+end
+
 MultiBot.InitializeInventoryFrame()
 
 MultiBot.InitializeItemusFrame()
