@@ -52,11 +52,11 @@ The rest of MultiBot Chatless continues to use the upstream `mod-multibot-bridge
 ---
 
 
-### NT1 Talent Builds — Naxxramas Bot Import (MultiBot 4.0.1 test)
+### NT1 Talent Builds — Naxxramas Bot Import (MultiBot 4.0.2 test)
 
-The fork now includes **one NT1 Talents button** on the right-hand MultiBot bar, near Consumables. Target an online bot, click the button and paste an NT1 code copied from [N Talent Calculator](https://github.com/CosmicCuddle/N-Talent-Calculator-) or the [Resource Hub calculator](https://github.com/CosmicCuddle/Naxxramas-Resource-Hub/tree/main/talents).
+The fork includes **one NT1 Talents button** on the right-hand MultiBot bar, near Consumables. **Both NT1 Talents and Bot Consumables are hidden by default.** Open MultiBot's existing main configuration bar and enable the corresponding book or elixir icon individually; each choice is saved across `/reload` and game restarts. Disabling either hides its right-side button and closes any open submenu/dialog. The visible buttons occupy adjacent slots without a gap when only one is enabled. Target an online bot, click the button and paste an NT1 code copied from [N Talent Calculator](https://github.com/CosmicCuddle/N-Talent-Calculator-) or the [Resource Hub calculator](https://github.com/CosmicCuddle/Naxxramas-Resource-Hub/tree/main/talents).
 
-The window names the selected character, displays the example **NT1:vanilla:warrior:3g-1**, and provides **Preview**, **Apply talents**, and **Cancel**. Pressing **Enter** in the paste box also sends Apply. Preview is read-only; Apply requests an actual talent update. If you change the selected target while the window is open, the request is refused. **Only the server response confirms success.**
+The refined, taller window avoids overlapping text at enlarged UI scale. It names the selected character, displays the example **NT1:vanilla:warrior:3g-1**, and provides **Preview**, **Apply talents**, and **Cancel**. Pressing **Enter** in the paste box also sends Apply. Preview is read-only; Apply requests an actual talent update. If you change the selected target while the window is open, the request is refused. **Only the server response confirms success.**
 
 The server must already have [Naxxramas Core's BotTalentImport system](https://github.com/CosmicCuddle/Mod-Naxxramas-Core/blob/main/docs/PLAYERBOT-NT1-TALENT-IMPORT.md) compiled and restarted. Its command interface is:
 
