@@ -2,7 +2,7 @@
 -- and unchanged left-click commands. Mock-only: no Playerbot is affected.
 MultiBot = {}
 StaticPopupDialogs = {}
-local popups, sent, messages, profiles = {}, {}, {}, {}
+local popups, sent, messages = {}, {}, {}
 CANCEL, OKAY = "Cancel", "Okay"
 UIErrorsFrame = {AddMessage=function(_, value) messages[#messages+1]=value end}
 StaticPopup_Show=function(key,a,b)
