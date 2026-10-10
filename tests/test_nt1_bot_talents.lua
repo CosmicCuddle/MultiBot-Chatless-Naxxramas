@@ -90,6 +90,14 @@ currentTarget={name="Testwarrior",guid="Player-01",class="WARRIOR"}
 assert(importer:Open(),"Selected bot must open the NT1 paste window")
 local popup=assert(importer.window)
 assert(popup.visible and importer.input.maxLetters==2048)
+assert(popup.width == 590 and popup.height == 348,
+    "NT1 popup needs increased vertical room for large WoW UI fonts")
+assert(importer.input.position[5] == -189 and
+    importer.status.position[5] == -235 and
+    importer.targetLabel.position[5] == -68,
+    "NT1 fields must have independent rows without label overlap")
+assert(created[1].icon == "INV_Misc_Book_07",
+    "Use the standard book icon rather than the invisible custom Talent.blp")
 assert(importer.targetLabel.text:find("Testwarrior",1,true))
 assert(#UISpecialFrames==1 and UISpecialFrames[1]=="MultiBotNT1TalentsWindow")
 assert(#commands==0,"Opening the paste dialog must never send an apply")
