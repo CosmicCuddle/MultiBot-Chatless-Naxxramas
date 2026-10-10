@@ -38,7 +38,7 @@ This is the current handover for the Naxxramas fork. Also preserve docs/ROADMAP.
 
 **Rollback:** close WoW; restore the backed-up MultiBot 4.0.2 directory. Only restore WTF SavedVariables if needed, because a restore can overwrite newer settings. Read-only right-click has no server effects; previous left-click consumable commands may have applied auras or supplied items, which client rollback cannot undo.
 
-**Status:** v4.0.3 code staged; CI/in-game checks pending at the time of writing. Previous UI features and experimental server NT1 talent apply are unchanged.
+**Current verification:** PR #3 Lua 5.1 package and right-click/order regressions passed in [run 38085514595](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38085514595), producing the installable multibot-nt1-talents-test artifact; repository Lua lint passed in [run 38085514590](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38085514590). **Real-client popup and menu visuals remain unverified.** The experimental server NT1 talent importer is unchanged.
 
 ## Current baseline and separation of responsibilities
 
