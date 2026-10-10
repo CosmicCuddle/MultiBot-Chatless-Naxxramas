@@ -113,7 +113,11 @@ assert(#commands==1)
 currentTarget={name="Testwarrior",guid="Player-01",class="WARRIOR"}
 
 -- WoW chat has a finite payload: do not issue truncated high-rank NT1 codes.
-local longCode="NT1:vanilla:warrior:"..string.rep("abcd-1.",38).."abcd-1"
+local longParts = {}
+for i = 1, 50 do
+    longParts[#longParts+1] = string.format("%x-1", i)
+end
+local longCode="NT1:vanilla:warrior:"..table.concat(longParts, ".")
 assert(importer:ValidateCode(longCode,"warrior"))
 assert(not importer:SendToTarget("apply",longCode))
 assert(#commands==1,"Oversized chat payload must not reach the server")
