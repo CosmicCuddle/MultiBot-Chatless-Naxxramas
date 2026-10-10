@@ -2,9 +2,8 @@
 
 Repository: https://github.com/CosmicCuddle/N-MultiBot-Chatless  
 Client: World of Warcraft 3.3.5a (Interface 30300, Lua 5.1)  
-Last accepted main commit: 75a3cf4c96ff53f4189a9c33d1327095ea0763f2 (PR #2 merged); previous NT1 PR #1: e33e87954cb53e5c8cb21b694faae37653dea180  
-Active development branch: fix/reverse-consumables-menu-order  
-Current main source baseline: MultiBot 4.0.2; development target v4.0.3 consumables menu improvements (test build only)  
+Current main commit: 7903afb2b3145dc27497f953f976a783fac7a11e (PR #3 merged); earlier PR #2 75a3cf4c96ff53f4189a9c33d1327095ea0763f2 and PR #1 e33e87954cb53e5c8cb21b694faae37653dea180  
+Current main source version: MultiBot 4.0.3 — reversed dungeon menu and read-only right-click help; test build pending live-client acceptance  
 Last maintained: 10 October 2026 — dungeon list order and profile explanations  
 Public suite baseline: N Addon Collection v2.0.0, which still includes approved MultiBot 4.0  
 Author and credit lineage: Nico Löbbert, Wishmaster117/TheWarlock, CosmicCuddle
@@ -38,7 +37,7 @@ This is the current handover for the Naxxramas fork. Also preserve docs/ROADMAP.
 
 **Rollback:** close WoW; restore the backed-up MultiBot 4.0.2 directory. Only restore WTF SavedVariables if needed, because a restore can overwrite newer settings. Read-only right-click has no server effects; previous left-click consumable commands may have applied auras or supplied items, which client rollback cannot undo.
 
-**Current verification:** PR #3 Lua 5.1 package and right-click/order regressions passed in [run 38085514595](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38085514595), producing the installable multibot-nt1-talents-test artifact; repository Lua lint passed in [run 38085514590](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38085514590). **Real-client popup and menu visuals remain unverified.** The experimental server NT1 talent importer is unchanged.
+**Current verification:** [PR #3](https://github.com/CosmicCuddle/N-MultiBot-Chatless/pull/3) merged at 7903afb2b3145dc27497f953f976a783fac7a11e. Main-branch [Actions 38085599581](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38085599581) passed the NT1, visibility and new consumables info/order Lua 5.1 tests and built the multibot-nt1-talents-test ZIP. PR lint and format passed before merge. **Real-client popup and menu visuals remain unverified.** The experimental server NT1 talent importer is unchanged.
 
 ## Current baseline and separation of responsibilities
 
