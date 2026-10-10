@@ -313,7 +313,10 @@ function MultiBot.InitializeConsumablesUI(tRight)
         local profileButton = menu.addButton(
             "Consumables" .. profile.name,
             0,
-            (index - 1) * 34,
+            -- Original table order is Maraudon through UBRS. MultiBot's
+            -- menu grows upward from the parent button, so reverse its
+            -- screen positions to show Maraudon at the top and UBRS below.
+            (#DUNGEON_PROFILES - index) * 34,
             profile.icon,
             profile.tip
         )
