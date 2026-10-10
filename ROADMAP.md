@@ -81,14 +81,14 @@ The addon update alone does not require recompiling worldserver. The server C++ 
 | Naxxramas consumables integration | Present in current standalone MultiBot 4.0, built against Naxxramas Core BotRaidConsumables.cpp |
 | N Addon Collection v2.0.0 | Published; approved pin remains MultiBot 4.0 |
 | Naxxramas Core NT1 command | Implemented separately; one experimental grouped random-bot application observed |
-| New targeted NT1 Talents button | Implemented on feature/nt1-bot-talents-paste-button; real client not tested yet |
-| Target-safe code entry and Preview/Apply dispatch | Implemented; automated Lua 5.1 tests must pass before merge |
-| Packaged MultiBot standalone test ZIP | Workflow configured; confirm generated test artifact and inspect inner folder before installation |
+| New targeted NT1 Talents button | PR #1 implemented; [Lua 5.1 targeted tests](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38083632251) and [Luacheck](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38083632355) passed; **real client not yet tested** |
+| Target-safe code entry and Preview/Apply dispatch | Implemented; Lua 5.1 target, GUID, grammar, no-send/preview/apply and Escape tests **passed** in Actions 38083632251 |
+| Packaged MultiBot standalone test ZIP | GitHub Actions 38083632251 produced artifact multibot-nt1-talents-test; check ZIP locally and test in actual client |
 | Permanent roadmap | This file, with next test and recovery instructions; keep updated with the PR |
 
 ## Immediate next task — validate feature in WoW, not only in a Lua mock
 
-1. Finish GitHub Actions regression; record the run link, PR number and exact source commit. Verify the test artifact includes one root MultiBot directory with all original libraries, icons and assets.
+1. **CI completed:** NT1 Lua 5.1 regression and test ZIP build passed in [Actions 38083632251](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38083632251); repository-wide lint passed in [38083632355](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38083632355). Pull request: [#1](https://github.com/CosmicCuddle/N-MultiBot-Chatless/pull/1). Confirm the extracted ZIP in client before marking installation validated.
 2. Before replacing the addon, close WoW and back up Interface/AddOns/MultiBot and the account/character WTF SavedVariables. Keep the previous 4.0 build available for rollback.
 3. Launch WoW 3.3.5a at the usual UI scale and target a disposable online Playerbot. Click the new NT1 Talents control in the right-hand MultiBot bar. Screenshot the dialog and check layout, example, button placement, focus and error labels.
 4. With the importer disabled (AccessMode 0), use Preview and verify Naxxramas Core refuses the command. Check that merely opening the popup never sends a command.
