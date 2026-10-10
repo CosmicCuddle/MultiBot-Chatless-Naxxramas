@@ -111,7 +111,7 @@ The user provided screenshots showing the new Talents button and window loaded a
 - [x] Saved-state restoration and immediate write through the existing profile store
 - [x] Initial display suppressed on addon construction
 - [x] Larger NT1 window with shorter labels and stock icon
-- [ ] Lua 5.1 targeted tests and repository lint/format for 4.0.2
+- [x] Lua 5.1 targeted NT1 and opt-in button tests passed in [Actions 38084685458](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38084685458); Lua lint passed in [38084685450](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38084685450). Format workflow pending final confirmation.
 - [ ] New build tested and screenshots reviewed in real WoW client
 - [ ] Saved states confirmed after reload/relog
 - [ ] Actual 51-point talents and learned spells independently checked when approved
