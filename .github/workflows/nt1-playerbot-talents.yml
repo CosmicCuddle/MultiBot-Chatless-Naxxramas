@@ -45,11 +45,16 @@ jobs:
           set -euo pipefail
           luac5.1 -p UI/MultiBotNT1TalentsUI.lua
           luac5.1 -p Core/MultiBotInit.lua
+          luac5.1 -p UI/MultiBotMainUI.lua
+          luac5.1 -p Core/MultiBotHandler.lua
           grep -Fqx 'UI\MultiBotNT1TalentsUI.lua' MultiBot.toc
           grep -Fq 'MultiBot.InitializeNT1TalentsUI(tRight)' Core/MultiBotInit.lua
 
       - name: Run targeted-bot and command safety regressions
         run: lua5.1 tests/test_nt1_bot_talents.lua
+
+      - name: Run default-off Naxxramas button layout regressions
+        run: lua5.1 tests/test_naxxramas_button_visibility.lua
 
       - name: Build clean install-ready MultiBot test ZIP
         run: |
