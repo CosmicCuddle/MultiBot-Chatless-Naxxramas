@@ -50,3 +50,33 @@ jobs:
 
       - name: Run targeted-bot and command safety regressions
         run: lua5.1 tests/test_nt1_bot_talents.lua
+
+      - name: Build clean install-ready MultiBot test ZIP
+        run: |
+          python3 - <<'PY'
+          import zipfile
+          from pathlib import Path
+          root = Path('.')
+          out = Path('dist/MultiBot-NT1-Talents-test.zip')
+          out.parent.mkdir(exist_ok=True)
+          excluded = {'.git', '.github', 'tests', 'docs', 'dist'}
+          with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as archive:
+              for path in sorted(root.rglob('*')):
+                  if not path.is_file() or any(x in excluded for x in path.parts):
+                      continue
+                  if path.name.startswith('.'):
+                      continue
+                  archive.write(path, 'MultiBot/' + path.as_posix())
+              included = set(archive.namelist())
+              assert 'MultiBot/MultiBot.toc' in included
+              assert 'MultiBot/UI/MultiBotNT1TalentsUI.lua' in included
+              assert 'MultiBot/Core/MultiBotInit.lua' in included
+          print(f'Built {out}')
+          PY
+
+      - name: Upload standalone MultiBot test artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: multibot-nt1-talents-test
+          path: dist/MultiBot-NT1-Talents-test.zip
+          if-no-files-found: error
