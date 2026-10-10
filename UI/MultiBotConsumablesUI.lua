@@ -239,7 +239,7 @@ function ConsumablesUI:EnsureDialogs()
     -- One reusable read-only detail popup for each named dungeon.
     -- Pass profile name/description through the standard WoW popup API.
     StaticPopupDialogs["MULTIBOT_CONSUMABLES_PROFILE_INFO"] = {
-        text = "%s\\n\\n%s\\n\\nRole and level matter: tanks get defensive elixirs, physical DPS get strength/agility choices, and casters/healers get suitable magic or intellect effects. Food and scrolls vary; potions are stocked when usable.\\n\\nYou must be inside the correct dungeon or wing.",
+        text = "%s\n\n%s\n\nRole and level matter: tanks get defensive elixirs, physical DPS get strength/agility choices, and casters/healers get suitable magic or intellect effects. Food and scrolls vary; potions are stocked when usable.\n\nYou must be inside the correct dungeon or wing.",
         button1 = OKAY or "Okay",
         timeout = 0,
         whileDead = true,
@@ -274,7 +274,7 @@ function ConsumablesUI:ShowProfileInfo(profile)
     self:EnsureDialogs()
     if StaticPopup_Show then
         StaticPopup_Show("MULTIBOT_CONSUMABLES_PROFILE_INFO",
-            profile.tip:match("^[^\\n]+") or profile.name,
+            profile.tip:match("^[^\n]+") or profile.name,
             profile.info)
         return true
     end
@@ -353,7 +353,7 @@ function MultiBot.InitializeConsumablesUI(tRight)
             -- screen positions to show Maraudon at the top and UBRS below.
             (#DUNGEON_PROFILES - index) * 34,
             profile.icon,
-            profile.tip .. "\\n\\n|cff55ccffRight-click: see expected consumables and protections|r"
+            profile.tip .. "\n\n|cff55ccffRight-click: see expected consumables and protections|r"
         )
 
         profileButton.doLeft = function()
