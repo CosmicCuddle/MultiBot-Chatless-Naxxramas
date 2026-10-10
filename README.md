@@ -27,7 +27,7 @@ This repository is a modified fork of [Wishmaster117/MultiBot-Chatless](https://
 
 **Fork modifications are maintained by CosmicCuddle.**
 
-**Modification notice — 2 October 2026:** this fork adds custom Naxxramas server integration for the bot consumables system while preserving the upstream MultiBot Chatless code and GPLv3 license.
+**Fork updates — 2–10 October 2026:** this fork adds Naxxramas server-specific Consumables and NT1 Playerbot talent import controls while preserving the upstream MultiBot Chatless code and GPLv3 license.
 
 ### Naxxramas Bot Consumables Integration
 
@@ -51,6 +51,23 @@ The rest of MultiBot Chatless continues to use the upstream `mod-multibot-bridge
 
 ---
 
+
+### NT1 Talent Builds — Naxxramas Bot Import (MultiBot 4.0.1 test)
+
+The fork now includes **one NT1 Talents button** on the right-hand MultiBot bar, near Consumables. Target an online bot, click the button and paste an NT1 code copied from [N Talent Calculator](https://github.com/CosmicCuddle/N-Talent-Calculator-) or the [Resource Hub calculator](https://github.com/CosmicCuddle/Naxxramas-Resource-Hub/tree/main/talents).
+
+The window names the selected character, displays the example **NT1:vanilla:warrior:2t-1**, and provides **Preview**, **Apply talents**, and **Cancel**. Pressing **Enter** in the paste box also sends Apply. Preview is read-only; Apply requests an actual talent update. If you change the selected target while the window is open, the request is refused. **Only the server response confirms success.**
+
+The server must already have [Naxxramas Core's BotTalentImport system](https://github.com/CosmicCuddle/Mod-Naxxramas-Core/blob/main/docs/PLAYERBOT-NT1-TALENT-IMPORT.md) compiled and restarted. Its command interface is:
+
+    .naxxbot talents preview <online-botname> <NT1-code>
+    .naxxbot talents apply <online-botname> <NT1-code>
+
+The default server setting is **NaxxramasCore.BotTalentImport.AccessMode = 0**, which disables both. Mode 1 allows GMs; mode 2 allows permitted normal players as well. **Both active modes can actually reset bot talents.** Before testing Apply, back up the characters database and the disposable bot's original talents, and review the server's optional SQL and experimental rollback limitations. Random Playerbots may replace imported talents during rerandomisation.
+
+The popup uses the server's separate NT1 command, not the existing premade Playerbots Set talents/Bridge feature. It refuses malformed or empty input, wrong known class, changed target, and anything exceeding one conservative **255-character 3.3.5a chat command**, avoiding silently truncated builds. A longer build will need a future supported transport mechanism.
+
+For installation, detailed tests, risks and rollback, see the [maintainer ROADMAP](ROADMAP.md). The existing public [N Addon Collection v2.0.0](https://github.com/CosmicCuddle/N-Addon-Collection/releases/tag/v2.0.0) is unchanged and still contains approved MultiBot 4.0.
 
 ## Companion Bridge Required
 
@@ -103,6 +120,7 @@ The project is currently **bridge-first / mostly chatless** rather than fully ch
 | **Vendor** | Single-item sale, bulk Sell Vendor, Buyback and Open Items bridge workflows. |
 | **Bank / Guild Bank** | Bridge-backed views and actions; exact physical BANK/GBANK deposits are implemented. |
 | **Talents** | Premade specialization apply and editable custom talent apply with server verification. |
+| **Naxxramas NT1 Talents** | Selected-bot NT1 paste, server Preview, and experimental Apply through Naxxramas Core, with target and chat-payload safety checks. |
 | **Glyphs** | Glyph display and apply-related workflows integrated with the character UI. |
 | **Professions** | Profession recipe browsing/crafting plus targeted item recipes. |
 | **Enchanting** | Dedicated Enchanting Trade Service using the native WoW Trade workflow. |
@@ -254,7 +272,8 @@ Detailed development history, audits, deferred work and technical residuals are 
 
 # Documentation
 
-- [`docs/ROADMAP.md`](docs/ROADMAP.md) — technical source of truth, completed milestones, audit references, next work and deferred backlog.
+- [`ROADMAP.md`](ROADMAP.md) — current Naxxramas fork development handover: target feature, source paths, prerequisites, backups, exact next task and testing status.
+- [`docs/ROADMAP.md`](docs/ROADMAP.md) — retained bridge-migration history, audits and upstream backlog.
 - [`docs/DEBUG_RUNBOOK.md`](docs/DEBUG_RUNBOOK.md) — in-game debug commands, observability guidance and bug-report procedure.
 
 ---
