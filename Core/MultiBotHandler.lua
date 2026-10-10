@@ -213,6 +213,8 @@ local MAINBAR_STATE_KEYS = {
 	"Beast",
 	"Disperse",
 	"Loot",
+	"ShowBotConsumables",
+	"ShowNT1Talents",
 	"Expand",
 	"RTSC",
 }
@@ -927,6 +929,12 @@ local function restoreMainBarSavedStates()
 	restoreEnableOnlyLeftToggle("Loot", function()
 		return getMainBarButton("Loot")
 	end)
+	restoreEnableOnlyLeftToggle("ShowBotConsumables", function()
+		return getMainBarButton("ShowBotConsumables")
+	end)
+	restoreEnableOnlyLeftToggle("ShowNT1Talents", function()
+		return getMainBarButton("ShowNT1Talents")
+	end)
 	restoreEnableOnlyLeftToggle("Expand", function()
 		return getMainBarButton("Expand")
 	end)
@@ -1387,6 +1395,8 @@ function MultiBot.HandleMultiBotEvent(event, ...)
 		setSavedMainBarValue("Beast", mainButtonState("Beast"))
 		setSavedMainBarValue("Disperse", mainButtonState("Disperse"))
 		setSavedMainBarValue("Loot", mainButtonState("Loot"))
+		setSavedMainBarValue("ShowBotConsumables", mainButtonState("ShowBotConsumables"))
+		setSavedMainBarValue("ShowNT1Talents", mainButtonState("ShowNT1Talents"))
 		setSavedMainBarValue("Expand", mainButtonState("Expand"))
 		setSavedMainBarValue("RTSC", mainButtonState("RTSC"))
 
