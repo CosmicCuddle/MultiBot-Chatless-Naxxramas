@@ -150,7 +150,7 @@ function Talents:EnsureWindow()
 
     local title = styledLabel(window, "NT1 TALENT IMPORT  |  PLAYERBOT", 22, -18, 470,
         {1, 0.84, 0.42})
-    title:SetFontObject("GameFontNormalLarge")
+    if GameFontNormalLarge then title:SetFontObject(GameFontNormalLarge) end
     local close = CreateFrame("Button", nil, window, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -7, -6)
 
