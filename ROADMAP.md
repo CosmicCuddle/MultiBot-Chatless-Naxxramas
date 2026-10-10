@@ -2,14 +2,43 @@
 
 Repository: https://github.com/CosmicCuddle/N-MultiBot-Chatless  
 Client: World of Warcraft 3.3.5a (Interface 30300, Lua 5.1)  
-Current main commit: e33e87954cb53e5c8cb21b694faae37653dea180 (PR #1 merged)
-Current main commit: 75a3cf4c96ff53f4189a9c33d1327095ea0763f2 (PR #2 merged); prior merged feature PR #1  
-Current main version: MultiBot 4.0.2 — opt-in Naxxramas controls and NT1 UI polish merged; in-game verification of these changes still pending  
-Last maintained: 10 October 2026 — opt-in Naxxramas toolbar controls  
+Last accepted main commit: 75a3cf4c96ff53f4189a9c33d1327095ea0763f2 (PR #2 merged); previous NT1 PR #1: e33e87954cb53e5c8cb21b694faae37653dea180  
+Active development branch: fix/reverse-consumables-menu-order  
+Current main source baseline: MultiBot 4.0.2; development target v4.0.3 consumables menu improvements (test build only)  
+Last maintained: 10 October 2026 — dungeon list order and profile explanations  
 Public suite baseline: N Addon Collection v2.0.0, which still includes approved MultiBot 4.0  
 Author and credit lineage: Nico Löbbert, Wishmaster117/TheWarlock, CosmicCuddle
 
 This is the current handover for the Naxxramas fork. Also preserve docs/ROADMAP.md, which is the detailed historical upstream bridge-migration audit. That document includes older August 2026 baseline SHAs and should not be mistaken for the current Naxxramas fork version. Update this root file with every meaningful change, including the new exact next task.
+
+## Current task — consumables menu and dungeon information (4.0.3)
+
+**Player request:** Reverse the eight visible dungeon entries from their previous top-to-bottom UBRS-to-Maraudon order, and provide a read-only explanation when right-clicking any dungeon icon.
+
+### Implementation details
+
+- Source: UI/MultiBotConsumablesUI.lua. The internal DUNGEON_PROFILES array remains in the same order and retains the same left-click icon/command associations. The menu grows upward from Consumables, so the new vertical position of each entry is (#DUNGEON_PROFILES - index) * 34. This displays Maraudon first at the top, then Sunken Temple, BRD, Scholomance, Stratholme Undead, Dire Maul, LBRS, ending with UBRS at the bottom. The generic Help icon remains separate.
+- Each profile now stores its level cap, protection or wing-specific explanatory text. The doRight handler calls ShowProfileInfo, opening the reusable MULTIBOT_CONSUMABLES_PROFILE_INFO StaticPopup. This action MUST NOT call RunProfile, SendChatMessage or alter bots. The standard tooltip identifies right-click as the information action.
+- Descriptions are checked against CosmicCuddle/Mod-Naxxramas-Core, src/Systems/BotRaidConsumables.cpp: PrepareDungeonBot and ResolveNamedProfile.
+- Shared bot preparation: eligible class/spec-role elixir, suitable Well Fed/Grilled Squid/Nightfin food, scrolls and level-appropriate healing/mana potions. This is an overview, not a promise that every bot receives every item.
+- Server-specific profiles: Maraudon and Sunken Temple cap 54 + Nature Protection; BRD cap 60 + Fire Protection; Scholomance cap 60 + Shadow Protection; Stratholme Undead cap 60 + Shadow Protection (Undead/Service Entrance side required); LBRS cap 60 + Lower side (no special protection); UBRS cap 60 + Upper side, Fire Protection, enhanced supplies; Dire Maul cap 60 auto-detects East (Nature), West (Shadow), North (enhanced supplies).
+- Enhanced supplies can include eligible Heavy Runecloth Bandages, Limited Invulnerability Potions, caster/healer oils and Rogue poisons. They are *supplied*, not all directly applied as auras.
+- MultiBot.toc updated to 4.0.3. The feature remains a standalone test change and is excluded from the already published N Addon Collection v2.0.0, which stays on the approved MultiBot 4.0 source pin.
+- Automated test: tests/test_consumables_profile_info.lua checks every profile's position and command, read-only right-click and appropriate cap/protection. Existing NT1 and default-off setting regressions still run. CI entry point: .github/workflows/nt1-playerbot-talents.yml.
+
+### Exact next task — in-game verification of 4.0.3
+
+1. Confirm GitHub Actions Lua 5.1 test, repository-wide lint and format runs pass on the pull request. After merging, record the final main SHA, main workflow run and downloadable MultiBot test artifact.
+2. Exit the WoW client. Back up Interface/AddOns/MultiBot and WTF SavedVariables (keep 4.0.2 available). Install the test ZIP containing exactly one MultiBot directory.
+3. Enable Bot Consumables in the main MultiBot configuration bar if it is disabled. Open its dungeon submenu. Confirm top-to-bottom: Maraudon, Sunken Temple, Blackrock Depths, Scholomance, Stratholme Undead, Dire Maul, Lower Blackrock Spire, Upper Blackrock Spire. The separate Help icon remains.
+4. Right-click Maraudon: information popup should mention level cap 54 and Nature Protection. Check Sunken (Nature), BRD (Fire), Scholomance and Stratholme Undead (Shadow), Dire Maul (East/West/North), LBRS (no dedicated protection), UBRS (Fire and enhanced extras).
+5. Right-click must never send bot consumable commands. Left-click must still send the correct command for the same icon. Only intentionally test the live effects while physically in the correct instance/wing.
+6. Check large-font popup wrapping, /reload, configuration visibility toggles, general Help, custom level prompt, NT1 Talents and other MultiBot functionality. Record screenshot and Lua errors.
+7. Update this roadmap with real screenshot/test outcomes and precise next task. Do not mark visual tests passed solely from Lua mocks.
+
+**Rollback:** close WoW; restore the backed-up MultiBot 4.0.2 directory. Only restore WTF SavedVariables if needed, because a restore can overwrite newer settings. Read-only right-click has no server effects; previous left-click consumable commands may have applied auras or supplied items, which client rollback cannot undo.
+
+**Current verification:** PR #3 Lua 5.1 package and right-click/order regressions passed in [run 38085514595](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38085514595), producing the installable multibot-nt1-talents-test artifact; repository Lua lint passed in [run 38085514590](https://github.com/CosmicCuddle/N-MultiBot-Chatless/actions/runs/38085514590). **Real-client popup and menu visuals remain unverified.** The experimental server NT1 talent importer is unchanged.
 
 ## Current baseline and separation of responsibilities
 

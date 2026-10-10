@@ -67,6 +67,8 @@ The default server setting is **NaxxramasCore.BotTalentImport.AccessMode = 0**, 
 
 The popup uses the server's separate NT1 command, not the existing premade Playerbots Set talents/Bridge feature. It refuses malformed or empty input, wrong known class, changed target, and anything exceeding one conservative **255-character 3.3.5a chat command**, avoiding silently truncated builds. A longer build will need a future supported transport mechanism.
 
+**Dungeon Consumables (4.0.3 test):** The dungeon-profile bar now reads **Maraudon at the top** through **Upper Blackrock Spire at the bottom** (closest to the Consumables main icon). **Left-click** continues to request the same server consumables profile. **Right-click** any dungeon icon for a read-only overview of its level cap, common role-based elixirs/food/scrolls/potions and the dungeon-specific protection or supplies. Dire Maul shows East/West/North differences; UBRS has Fire Protection and additional consumable supplies. The right-click overview is approximate, not a live report of exactly which items a particular bot received; the server applies only what is eligible for the bot's class, spec, level and physical dungeon/wing. The general Help button remains available.
+
 For installation, detailed tests, risks and rollback, see the [maintainer ROADMAP](ROADMAP.md). The existing public [N Addon Collection v2.0.0](https://github.com/CosmicCuddle/N-Addon-Collection/releases/tag/v2.0.0) is unchanged and still contains approved MultiBot 4.0.
 
 ## Companion Bridge Required
