@@ -29,7 +29,7 @@ The request is one new Talents button, adjacent to MultiBot's existing right-sid
 
 - Name and detected class of the character that was targeted when opened.
 - Clear instructions to paste an NT1 build code from N Talent Calculator or the Resource Hub.
-- A genuinely formatted example: NT1:vanilla:warrior:2t-1 (this is a single-point illustrative code, not a raid build).
+- A genuinely formatted example: NT1:vanilla:warrior:3g-1 (this is a single-point illustrative code, not a raid build).
 - One paste box, plus Preview, Apply talents and Cancel.
 - Preview sends a read-only server command, leaves the dialog open and relies on server chat for results.
 - Apply talents, or Enter in the edit box, sends the exact server apply command and closes the box on dispatch. Server chat determines if application actually succeeded.
