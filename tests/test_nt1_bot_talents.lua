@@ -67,16 +67,16 @@ assert(#created==1 and created[1].name=="NT1Talents" and created[1].x==136,
 assert(created[1].tip:find("Naxxramas Core",1,true))
 assert(MultiBot.InitializeNT1TalentsUI(right)==importer and #created==1,
     "Repeated initialization must not duplicate toolbar buttons")
-assert(importer:ValidateCode("NT1:vanilla:warrior:2t-1", "warrior"))
+assert(importer:ValidateCode("NT1:vanilla:warrior:3g-1", "warrior"))
 assert(not importer:ValidateCode("NT1:vanilla:mage:2t-1", "warrior"),
     "Client must reject a code for the wrong target class")
 assert(not importer:ValidateCode("NT1:vanilla:warrior:"),
     "An empty build cannot be applied accidentally")
-assert(not importer:ValidateCode("NT1:vanilla:warrior:2t-1.2t-2"),
+assert(not importer:ValidateCode("NT1:vanilla:warrior:3g-1.2t-2"),
     "Duplicate talent entries are invalid")
-assert(not importer:ValidateCode("NT1:vanilla:warrior:2t-1\n.naxxbot talents apply OtherPlayer NT1:"),
+assert(not importer:ValidateCode("NT1:vanilla:warrior:3g-1\n.naxxbot talents apply OtherPlayer NT1:"),
     "Chat-command injection must be rejected")
-assert(not importer:ValidateCode("NT1:vanilla:warrior:2t-10"),
+assert(not importer:ValidateCode("NT1:vanilla:warrior:3g-10"),
     "Rank 10 is not valid in NT1")
 assert(not importer:ValidateCode("NT1:other:warrior:2t-1"),
     "Unknown eras are rejected")
@@ -94,7 +94,7 @@ assert(importer.targetLabel.text:find("Testwarrior",1,true))
 assert(#UISpecialFrames==1 and UISpecialFrames[1]=="MultiBotNT1TalentsWindow")
 assert(#commands==0,"Opening the paste dialog must never send an apply")
 
-local code="NT1:vanilla:warrior:2t-1"
+local code="NT1:vanilla:warrior:3g-1"
 importer.input:SetText(code)
 local ok=importer:SendToTarget("preview",importer.input:GetText())
 assert(ok and #commands==1 and commands[1]==
