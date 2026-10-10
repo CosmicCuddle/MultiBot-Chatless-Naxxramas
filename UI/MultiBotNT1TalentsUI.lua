@@ -103,8 +103,9 @@ function Talents:SendToTarget(action, text)
     -- Intentional GM/server command path. This is not a Playerbots whisper,
     -- nor a new generic command-execution/fallback facility.
     SendChatMessage(command, "SAY")
-    return true, "Command sent for " .. target.name ..
-        ". Check server chat for " .. action .. " result."
+    return true, action == "preview" and
+        ("Preview sent for " .. target.name .. ". Check server chat.") or
+        ("Apply sent for " .. target.name .. ". Check server chat.")
 end
 
 local function styledLabel(parent, text, x, y, width, color)
@@ -129,8 +130,8 @@ end
 function Talents:EnsureWindow()
     if self.window then return self.window end
     local window = CreateFrame("Frame", WINDOW_NAME, UIParent)
-    window:SetWidth(560)
-    window:SetHeight(238)
+    window:SetWidth(590)
+    window:SetHeight(348)
     window:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     window:SetFrameStrata("DIALOG")
     window:SetMovable(true)
@@ -148,31 +149,31 @@ function Talents:EnsureWindow()
     window:SetBackdropColor(0.035, 0.03, 0.045, 0.98)
     window:SetBackdropBorderColor(0.68, 0.54, 0.30, 1)
 
-    local title = styledLabel(window, "NT1 TALENT IMPORT  |  PLAYERBOT", 22, -18, 470,
+    local title = styledLabel(window, "NT1 TALENT IMPORT", 22, -22, 480,
         {1, 0.84, 0.42})
     if _G.GameFontNormalLarge then title:SetFontObject(_G.GameFontNormalLarge) end
     local close = CreateFrame("Button", nil, window, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", window, "TOPRIGHT", -7, -6)
 
-    self.targetLabel = styledLabel(window, "", 22, -48, 510, {1, 0.84, 0.42})
+    self.targetLabel = styledLabel(window, "", 22, -68, 540, {1, 0.84, 0.42})
     styledLabel(window,
-        "Paste a build copied from N Talent Calculator or the Resource Hub website.",
-        22, -73, 516)
-    styledLabel(window, "Example: " .. EXAMPLE, 22, -91, 515,
+        "Paste an NT1 build code below.",
+        22, -110, 540)
+    styledLabel(window, "Example (Warrior): " .. EXAMPLE, 22, -148, 540,
         {0.69, 0.85, 1})
 
     local input = CreateFrame("EditBox", nil, window, "InputBoxTemplate")
-    input:SetPoint("TOPLEFT", window, "TOPLEFT", 32, -120)
-    input:SetSize(490, 28)
+    input:SetPoint("TOPLEFT", window, "TOPLEFT", 32, -189)
+    input:SetSize(526, 28)
     input:SetAutoFocus(false)
     input:SetMaxLetters(MAX_CODE_LENGTH)
     input:SetText("")
     self.input = input
 
-    self.status = styledLabel(window, "No command sent.", 22, -159, 516)
+    self.status = styledLabel(window, "No command sent.", 22, -235, 540)
     styledLabel(window,
-        "Applying changes bot talents. Preview first; server restrictions still apply.",
-        22, -180, 518, {1, 0.67, 0.44})
+        "Apply changes bot talents. Back up the bot first.",
+        22, -281, 540, {1, 0.67, 0.44})
 
     local function submit(action)
         local ok, reason = Talents:SendToTarget(action, input:GetText())
@@ -211,9 +212,9 @@ function Talents:Open()
     if not target then message(reason, true); return false end
     self.boundTarget = target
     local window = self:EnsureWindow()
-    self.targetLabel:SetText("Selected bot: " .. target.name ..
-        "  |  Paste a matching " .. (target.class or "class") .. " build.")
-    self.status:SetText("Preview is read-only; Apply changes talents. Check server response.")
+    self.targetLabel:SetText("Bot: " .. target.name ..
+        "  |  Class: " .. (target.class or "unknown"))
+    self.status:SetText("Preview is read-only. Server chat confirms results.")
     self.input:SetText("")
     window:Show()
     self.input:SetFocus()
@@ -225,7 +226,7 @@ function MultiBot.InitializeNT1TalentsUI(tRight)
     if not tRight or not tRight.addButton then return nil end
     local b = tRight.addButton(
         "NT1Talents", 136, 0,
-        "Interface\\AddOns\\MultiBot\\Textures\\Talent.blp",
+        "INV_Misc_Book_07",
         "NT1 Talents - selected Playerbot" ..
         "\n|cffffffffTarget a bot and paste an NT1 build from N Talent Calculator or the website.|r" ..
         "\n|cffffaa55Apply changes actual bot talents. Preview is read-only.|r" ..

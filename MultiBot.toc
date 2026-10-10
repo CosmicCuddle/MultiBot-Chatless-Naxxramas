@@ -1,5 +1,5 @@
 ## Interface: 30300
-## Version: 4.0.1
+## Version: 4.0.2
 ## Title: MultiBot
 ## Notes: User Interface for Playerbot
 ## Author: Nico Löbbert
@@ -9,7 +9,7 @@
 ## X-Contributors: Wishmaster117 aka TheWarlock
 ## X-ForkMaintainer: CosmicCuddle
 ## X-ForkProjectURL: https://github.com/CosmicCuddle/MultiBot-Chatless-Naxxramas
-## X-ForkChanges: Naxxramas bot consumables and NT1 Playerbot talent import controls
+## X-ForkChanges: Naxxramas consumables and NT1 talent import with opt-in main-bar visibility
 ## X-ForkModified: 2026-10-10
 ## X-Contact: plexalexdcnh@gmail.com
 ## X-ProjectURL: https://github.com/Wishmaster117/MultiBot-Standalone

@@ -69,6 +69,12 @@ if MultiBot.InitializeNT1TalentsUI then
 	MultiBot.InitializeNT1TalentsUI(tRight)
 end
 
+-- Both custom right-side controls are opt-in. Hiding them here prevents
+-- a flash of visible buttons before the saved main-bar settings restore.
+if MultiBot.RefreshNaxxramasRightButtons then
+	MultiBot.RefreshNaxxramasRightButtons()
+end
+
 MultiBot.InitializeInventoryFrame()
 
 MultiBot.InitializeItemusFrame()

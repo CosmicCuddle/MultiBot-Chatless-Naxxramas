@@ -65,6 +65,56 @@ local function getMainToggleState(name)
     return button and button.state == true
 end
 
+-- Naxxramas-specific right buttons are opt-in, matching the other main-bar
+-- configuration toggles. Missing saved keys intentionally mean disabled.
+function MultiBot.RefreshNaxxramasRightButtons()
+    local multibar = MultiBot.frames and MultiBot.frames["MultiBar"]
+    local right = multibar and multibar.frames and multibar.frames["Right"]
+    if not right or not right.buttons then return end
+
+    local consumables = right.buttons["Consumables"]
+    local talents = right.buttons["NT1Talents"]
+    local showConsumables = getMainToggleState("ShowBotConsumables")
+    local showTalents = getMainToggleState("ShowNT1Talents")
+
+    if consumables then
+        if showConsumables then
+            consumables.setPoint(102, 0)
+            consumables:Show()
+        else
+            consumables:Hide()
+            local menu = right.frames and right.frames["ConsumablesMenu"]
+            if menu then menu:Hide() end
+        end
+    end
+
+    if talents then
+        if showTalents then
+            talents.setPoint(showConsumables and 136 or 102, 0)
+            talents:Show()
+        else
+            talents:Hide()
+            local importer = MultiBot.NT1Talents
+            if importer and importer.window then
+                if importer.input then importer.input:ClearFocus() end
+                importer.window:Hide()
+            end
+        end
+    end
+
+    if MultiBot.RequestClickBlockerUpdate then
+        MultiBot.RequestClickBlockerUpdate(right)
+    end
+end
+
+local function toggleNaxxramasControl(button, saveKey)
+    local enabled = MultiBot.OnOffSwitch(button)
+    if MultiBot.SetSavedMainBarValue then
+        MultiBot.SetSavedMainBarValue(saveKey, enabled and "true" or "false")
+    end
+    MultiBot.RefreshNaxxramasRightButtons()
+end
+
 local function captureLeftLayoutBase(leftRoot)
     if leftLayoutBase then
         return
@@ -1289,6 +1339,8 @@ function MultiBot.InitializeMainUI(tMultiBar)
         "Beast",
         "Disperse",
         "Loot",
+        "ShowBotConsumables",
+        "ShowNT1Talents",
         "Expand",
         "Release",
         "Stats",
@@ -1448,6 +1500,36 @@ function MultiBot.InitializeMainUI(tMultiBar)
         end,
     })
     wireShiftRightSwap(mainFrame.buttons["Loot"], "Loot")
+
+    -- These are visibility switches, not talent actions: a new installation
+    -- keeps both Naxxramas-specific right-bar controls hidden until enabled.
+    createMainActionButton(mainFrame, {
+        name = "ShowBotConsumables",
+        y = 272,
+        icon = "INV_Alchemy_Elixir_05",
+        tip = "Bot Consumables visibility" ..
+            "\n|cffffffffShow or hide the right-bar Bot Consumables controls.|r" ..
+            "\n\n|cffff0000Left-click: enable or disable Bot Consumables|r",
+        disabled = true,
+        doLeft = function(button)
+            toggleNaxxramasControl(button, "ShowBotConsumables")
+        end,
+    })
+    wireShiftRightSwap(mainFrame.buttons["ShowBotConsumables"], "ShowBotConsumables")
+
+    createMainActionButton(mainFrame, {
+        name = "ShowNT1Talents",
+        y = 306,
+        icon = "INV_Misc_Book_07",
+        tip = "NT1 Talents visibility" ..
+            "\n|cffffffffShow or hide the right-bar NT1 talent import button.|r" ..
+            "\n\n|cffff0000Left-click: enable or disable NT1 Talents|r",
+        disabled = true,
+        doLeft = function(button)
+            toggleNaxxramasControl(button, "ShowNT1Talents")
+        end,
+    })
+    wireShiftRightSwap(mainFrame.buttons["ShowNT1Talents"], "ShowNT1Talents")
 
     createMainActionButton(mainFrame, {
         name = "Expand",
