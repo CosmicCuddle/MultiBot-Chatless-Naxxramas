@@ -90,5 +90,6 @@ local before=#sent
 help.doLeft()
 assert(#sent==before,"General Help must not issue consumables command")
 assert(popups[#popups].key=="MULTIBOT_CONSUMABLES_HELP")
-assert(not MultiBot.InitializeConsumablesUI(root) == false)
+assert(MultiBot.InitializeConsumablesUI(root)==ui and #menu.buttons==9,
+    "Repeated initialization must not duplicate dungeon buttons")
 print("Dungeon screen order, all right-click detail popups, 8 left-click commands and Help passed")
