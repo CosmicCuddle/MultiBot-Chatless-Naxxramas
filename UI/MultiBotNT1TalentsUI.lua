@@ -72,7 +72,11 @@ local function getTarget()
     if type(name) ~= "string" or name == "" or name:find("[%s%c]") then
         return nil, "The selected bot has no usable character name."
     end
-    local _, classToken = UnitClass and UnitClass("target")
+    local classToken
+    if type(UnitClass) == "function" then
+        local _, token = UnitClass("target")
+        classToken = token
+    end
     local class = type(classToken) == "string" and
         classToken:lower():gsub("[^a-z]", "") or nil
     local guid = UnitGUID and UnitGUID("target") or nil
